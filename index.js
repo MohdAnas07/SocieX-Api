@@ -15,11 +15,10 @@ dotenv.config()
 // local mongo compass db connection ==============>>
 require('./db/config')
 
+
 //mongo atlas db connection ====================>>
-// const URL = 'mongodb+srv://Anas07:HqSsHeDDcgb4ceLE@cluster0.qdvydom.mongodb.net/social?retryWrites=true & w=majority'
 
-
-// mongoose.connect(URL,
+// mongoose.connect(`${process.env.MONGO_URL}`,
 //     {
 //         useNewUrlParser: true, useUnifiedTopology: true
 //     },
