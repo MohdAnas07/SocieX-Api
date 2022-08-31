@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 
-// UPDATE USER
-router.put('/update/:id', async (req, res) => {
+// UPDATE USER======================================================>>
+router.put('/:id', async (req, res) => {
     // for checking update only their account credentials 
-    if (req.body.userId === req.params.id) {
+    if (req.body.userId === req.params.id || req.body.isAdmin) {
 
         // if password going to update then we have to encrypt that first
         if (req.body.password) {
@@ -36,30 +36,41 @@ router.put('/update/:id', async (req, res) => {
 
 })
 
-// DELETE USER
 
-router.put('/update/:id', async (req, res) => {
+
+// DELETE USER======================================================>>
+router.delete('/:id', async (req, res) => {
     // for checking update only their account credentials 
-    if (req.body.userId === req.params.id) {
-
+    if (req.body.userId === req.params.id || req.body.isAdmin) {
         // here we deleting user 
         try {
-            const user = await User.findByIdAndUpdate(req.params.id)
+            await User.findByIdAndDelete(req.params.id)
             res.status(200).json("account has been deleted Successfully")
 
         } catch (error) {
             res.status(500).json(error)
         }
-
     } else {
-        res.status(403).json("you can update only your account")
-
+        res.status(403).json("you can delete only your account")
     }
-
 })
 
-// GET A USER 
-// FOLLOW A USER
-// FOLLOWING A USER
+
+// GET A USER============================================================>> 
+router.get('/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        const { password, updatedAt, ...other } = user._doc;
+
+        res.status(200).json(other)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
+
+
+// FOLLOW A USER======================================================>>
+
+// FOLLOWING A USER======================================================>>
 
 module.exports = router;
