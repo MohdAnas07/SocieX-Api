@@ -1,23 +1,34 @@
 const router = require('express').Router();
 const User = require('../models/user');
+const express = require('express');
+const app = express();
+
+
+app.use(express.json());
 
 router.get('/', (req, res) => {
     res.send('hello, this is auth route');
 })
 
 
-//register 
+//register Api 
 
-router.get('/register', async (req, res) => {
-    let user = await new User({
-        username: 'john doe',
-        email: 'john@gmail.com',
-        password: '12345',
+router.post('/register', async (req, res) => {
+    const newUser = new User({
+        username: req.body.username,
+        email: req.body.email,
+        password: req.body.password,
     })
-    await user.save();
-    res.send('ok')
+
+    try {
+        const user = await newUser.save()
+        res.status(200).json(user)
+    } catch (error) {
+        console.log(error);
+    }
+
 })
 
-//login
+// login api
 
 module.exports = router;

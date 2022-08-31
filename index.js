@@ -5,21 +5,28 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const helmet = require('helmet');
 
-const userRoute = require('./routes/users');
-const authRoute = require('./routes/auth');
+const userRoute = require('./routes/users.js');
+const authRoute = require('./routes/auth.js');
 
+const PORT = process.env.PORT || 5000
 
 dotenv.config()
 
-const PORT = process.env.PORT || 8800
+// local mongo compass db connection ==============>>
+require('./db/config')
+
+//mongo atlas db connection ====================>>
+// const URL = 'mongodb+srv://Anas07:HqSsHeDDcgb4ceLE@cluster0.qdvydom.mongodb.net/social?retryWrites=true & w=majority'
 
 
-mongoose.connect(process.env.MONGO_URL,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    () => {
-        console.log('mongoDb Connected');
-    }
-)
+// mongoose.connect(URL,
+//     {
+//         useNewUrlParser: true, useUnifiedTopology: true
+//     },
+//     () => {
+//         console.log('database connected successfully ');
+//     }
+// )
 
 // middleware ===============
 
@@ -32,7 +39,6 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 
 
-
-app.listen(PORT, () => {
-    console.log('server is listening at port 5000')
+app.listen(5000, () => {
+    console.log('server is listening at port 8800')
 })
